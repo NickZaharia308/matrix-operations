@@ -1,12 +1,32 @@
-//Zaharia Nicusor-Alexandru_315CA
+/**
+ * @file    my_octave.c
+ * @brief   This file contains the implementation of matrix operations.
+ * 
+ * @author  Zaharia Nicusor-Alexandru
+ * @date    08-12-2024
+ */
+
 
 #include <stdio.h>
 #include <stdlib.h>
 
 /*structura care contine un dublu pointer, numarul de linii si
 numarul de coloane*/
+/**
+ * @brief   Structure used for the matrix
+ * 
+ * This constant is used to prevent overflow in arithmetic operations.
+ */
 struct matrix {
-	int **mat, n, m;
+	 /**
+	 * @brief   double int pointer for the matrix.
+	 */
+	int **mat;
+	 /**
+	 * @brief   n for number of lines and m for number of columns.
+	 */
+	int n;
+	int m;
 };
 
 /*functie care citeste numarul de linii si numarul de coloane
