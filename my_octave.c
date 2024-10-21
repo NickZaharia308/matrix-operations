@@ -443,62 +443,91 @@ int main(void)
 	struct matrix *v, aux;
 	scanf("%c", &c);
 	while (c != 'Q') {
-		if (c == 'L') {
-			count++;
-			if (alloc == 0) {
-			/*daca nu am nici o matrice in memorie folosesc malloc,
-			altfel folosesc realloc*/
-				v = (struct matrix *)malloc(sizeof(struct matrix));
-				if (!v) {
-					printf("Malloc failed!\n");
-					exit(0);
+		switch (c) {
+			case 'L': // Load a matrix
+				count++;
+				if (alloc == 0) {
+					/*
+					If there is no matrix in memory, I alloc the v structure,
+					Else, I realloc the structure
+					*/
+					v = (struct matrix *)malloc(sizeof(struct matrix));
+					if (!v) {
+						printf("Malloc failed!\n");
+						exit(0);
+					}
+					alloc = 1;
+				} else {
+					v = realloc(v, sizeof(struct matrix) * (count + 1));
 				}
-				alloc = 1;
-			} else {
-				v = realloc(v, sizeof(struct matrix) * (count + 1));
-			}
-			read_rows_cols(v, count);
-			alloc_matrix(v, count, v[count].m, v[count].n);
-			load_matrix(v, count);
-		} else if (c == 'D') {
-			print_rows_cols(v, count);
-		} else if (c == 'P') {
-			print_matrix(v, count);
-		} else if (c == 'C') {
-			crop_matrix(v, count);
-		} else if (c == 'M') {
-			count++;
-			if (alloc == 0) {
-				v = (struct matrix *)malloc(sizeof(struct matrix));
-				if (!v) {
-					printf("Malloc failed!\n");
-					exit(0);
+				read_rows_cols(v, count);
+				alloc_matrix(v, count, v[count].m, v[count].n);
+				load_matrix(v, count);
+				break;
+
+			case 'D': // Print matrix dimensions
+				print_rows_cols(v, count);
+				break;
+
+			case 'P': // Print the matrix
+				print_matrix(v, count);
+				break;
+
+			case 'C': // Crop the matrix
+				crop_matrix(v, count);
+				break;
+
+			case 'M': // Multiply matrices
+				count++;
+				if (alloc == 0) {
+					v = (struct matrix *)malloc(sizeof(struct matrix));
+					if (!v) {
+						printf("Malloc failed!\n");
+						exit(0);
+					}
+					alloc = 1;
+				} else {
+					v = realloc(v, sizeof(struct matrix) * (count + 1));
 				}
-				alloc = 1;
-			} else {
-				v = realloc(v, sizeof(struct matrix) * (count + 1));
-			}
-			matrix_multiplication(v, &count);
-		} else if (c == 'O') {
-			sort_matrix(v, count, aux);
-		} else if (c == 'T') {
-			transpose_matrix(v, count);
-		} else if (c == 'R') {
-			power_matrix(v, count);
-		} else if (c == 'F') {
-			ok = free_and_move_matrix(v, &count);
-			/*daca se executa operatia, atunci eliberez spatiul alocat
-			ultimei matrici*/
-			if (ok)
-				v = realloc(v, sizeof(struct matrix) * (count + 1));
-		} else if (c >= 'A' && c <= 'Z') {
-			printf("Unrecognized command\n");
+				matrix_multiplication(v, &count);
+				break;
+
+			case 'O': // Sort matrices
+				sort_matrix(v, count, aux);
+				break;
+
+			case 'T': // Transpose the matrix
+				transpose_matrix(v, count);
+				break;
+
+			case 'R': // Raise matrix to a power
+				power_matrix(v, count);
+				break;
+
+			case 'F': // Free memory and move matrix
+				ok = free_and_move_matrix(v, &count);
+				/*
+				If the matrix is realy deallocated from the memory, then
+				v will be reallocated to the new size (count is modified)
+				in the function above
+				*/
+				if (ok)
+					v = realloc(v, sizeof(struct matrix) * (count + 1));
+				break;
+
+			default:
+				if (c >= 'A' && c <= 'Z') {
+					printf("Unrecognized command\n");
+				}
+				break;
 		}
 		scanf("%c", &c);
 	}
-	//eliberez din memorie matricele accesate cu pointerul v
+
+	// Free from the memory the matrixes accesed using v pointer
 	dealloc(v, count);
-	//eliberez din memorie pointerul de tip struct matrix v
+
+	// Free from the memory v pointer to matrix struct
 	free(v);
 	return 0;
 }
