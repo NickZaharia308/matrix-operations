@@ -3,12 +3,12 @@
  * @brief   This file contains the implementation of matrix operations.
  * 
  * @author  Zaharia Nicusor-Alexandru
- * @date    08-12-2024
+ * @date    08-12-2022
  */
-
 
 #include <stdio.h>
 #include <stdlib.h>
+
 
 /*structura care contine un dublu pointer, numarul de linii si
 numarul de coloane*/
@@ -29,14 +29,37 @@ struct matrix {
 	int m;
 };
 
-/*functie care citeste numarul de linii si numarul de coloane
-al unei matrici date*/
+
+/**
+ * @brief   Reads the number of lines and number of columns.
+ * 
+ * This function reads the number of lines and
+ * the number of columns of a matrix.
+ * 
+ * @param   v   Pointer to the array of matrixes.
+ * @param   count   Number of current matrixes stored by v.
+ * 
+ * @note    The number of lines and the number of columns must be signed int.
+ */
 void read_rows_cols(struct matrix *v, int count)
 {
 	scanf("%d%d", &v[count].m, &v[count].n);
 }
 
-/*functie care aloca dinamic o matrice cu m linii si n coloane*/
+
+/**
+ * @brief   Allocates memory for a (m x n) matrix.
+ * 
+ * This function dynamically allocates memory for a matrix with m lines
+ * and n columns.
+ * 
+ * @param   v   Pointer to the array of matrixes.
+ * @param   count   ID of the current matrix.
+ * @param	m	Number of lines for the matrix.
+ * @param	n	Number of columns for the matrix
+ * 
+ * @note    The function checks if the resources were allocated.
+ */
 void alloc_matrix(struct matrix *v, int count, int m, int n)
 {
 	v[count].mat = (int **)malloc(m * sizeof(int *));
@@ -54,8 +77,18 @@ void alloc_matrix(struct matrix *v, int count, int m, int n)
 	}
 }
 
-/*citirea de la STDIN a elementelor unei matrici cu m linii
-si n coloane*/
+
+/**
+ * @brief   Reads from STDIN the elements of the matrix.
+ * 
+ * This function reads from Standard Input the values that will
+ * be stored in the matrix
+ * 
+ * @param   v   Pointer to the array of matrixes.
+ * @param   count   ID of the current matrix.
+ * 
+ * @note    The read values will be signed ints.
+ */
 void load_matrix(struct matrix *v, int count)
 {
 	for (int i = 0; i < v[count].m; i++)
@@ -89,9 +122,21 @@ void print_matrix(struct matrix *v, int count)
 		}
 }
 
+
 /*functie care citeste indexul unei matrici si afiseaza numarul
 ei de linii si de coloane sau mesaj daca indexul dat nu corespunde
 unei matrici din memorie */
+/**
+ * @brief   Prints the number of lines and the number of columns of a matrix.
+ * 
+ * This function reads the ID of a matrix and prints
+ * the number of the lines and the number of the columns of the matrix.
+ * 
+ * @param   v   Pointer to the array of matrixes.
+ * @param   count   Number of current matrixes stored by v.
+ * 
+ * @note    If the index (ID) is invalid, a message will be printed.
+ */
 void print_rows_cols(struct matrix *v, int count)
 {
 	int index;
