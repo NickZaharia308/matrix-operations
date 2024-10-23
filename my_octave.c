@@ -104,9 +104,18 @@ void free_matrix(struct matrix *v, int count, int m)
 	free(v[count].mat);
 }
 
-/*functie care citeste indexul unei matrici si afiseaza matricea
-sau, in caz contrar, mesaj daca indexul dat nu corespunde
-unei matrici din memorie */
+
+/**
+ * @brief   Prints the matrix.
+ * 
+ * This function reads the ID of a matrix and prints all the values
+ * of a matrix (first by line, then by column).
+ * 
+ * @param   v   Pointer to the array of matrixes.
+ * @param   count   Number of current matrixes stored by v.
+ * 
+ * @note    If the index (ID) is invalid, a message will be printed.
+ */
 void print_matrix(struct matrix *v, int count)
 {
 	int index;
@@ -123,9 +132,6 @@ void print_matrix(struct matrix *v, int count)
 }
 
 
-/*functie care citeste indexul unei matrici si afiseaza numarul
-ei de linii si de coloane sau mesaj daca indexul dat nu corespunde
-unei matrici din memorie */
 /**
  * @brief   Prints the number of lines and the number of columns of a matrix.
  * 
@@ -147,32 +153,48 @@ void print_rows_cols(struct matrix *v, int count)
 		printf("%d %d\n", v[index].m, v[index].n);
 }
 
-/*functie care redimensioneaza numarul de linii si numarul de
-coloane al unei matrici*/
+
+/**
+ * @brief   Crops a given matrix.
+ * 
+ * This function reads the ID of a matrix and crops the number of lines
+ * and the number of the columns
+ * 
+ * @param   v   Pointer to the array of matrixes.
+ * @param   count   Number of current matrixes stored by v.
+ * 
+ * @note    If the index (ID) is invalid, a message will be printed.
+ */
 void crop_matrix(struct matrix *v, int count)
 {
 	int index, m, n, *index_rows, *index_cols, **copy, i, j;
 	scanf("%d", &index);
+
 	if (index <= count && index >= 0) {
-		scanf("%d", &m);
-		//pointer care memoreaza liniile dupa care fac redimensionarea
+
+		// Pointer that memorates the lines by which the crop is made
 		index_rows = (int *)malloc(m * sizeof(int));
+
+		scanf("%d", &m);
 		if (!index_rows) {
 			printf("Malloc failed!\n");
 			exit(0);
 		}
 		for (int i = 0; i < m; i++)
 			scanf("%d", &index_rows[i]);
-		scanf("%d", &n);
-		//pointer care memoreaza coloanele dupa care fac redimensionarea
+
+		// Pointer that memorates the columns by which the crop is made
 		index_cols = (int *)malloc(n * sizeof(int));
+
+		scanf("%d", &n);
 		if (!index_cols) {
 			printf("Malloc failed!\n");
 			exit(0);
 		}
 		for (int i = 0; i < n; i++)
 			scanf("%d", &index_cols[i]);
-		//aloc dinamic un dublu pointer care memoreaza matricea redimensionata
+
+		// Dynamically allocated double pointer that memorates the new matrix
 		copy = (int **)malloc(m * sizeof(int *));
 		if (!copy) {
 			printf("Malloc failed!\n");
@@ -188,17 +210,19 @@ void crop_matrix(struct matrix *v, int count)
 		for (i = 0; i < m; i++)
 			for (j = 0; j < n; j++)
 				copy[i][j] = v[index].mat[index_rows[i]][index_cols[j]];
-		//eliberez vechea matrice si o aloc dinamic cu noile dimensiuni
+
+		// Free the old matrix and realloc it with the new dimensions
 		free_matrix(v, index, v[index].m);
 		alloc_matrix(v, index, m, n);
 		v[index].m = m;
 		v[index].n = n;
-		//copiez valorile din dublu pointerul ajutator in matrice
+
+		// Copy the values from the copy matrix
 		for (i = 0; i < m; i++)
 			for (j = 0; j < n; j++)
 				v[index].mat[i][j] = copy[i][j];
-		/*eliberez toti pointerii de care m-am folosit pentru a
-		prelucra dimensiunile si valorile matricii*/
+
+		// Free all the pointers
 		for (int i = 0; i < m; i++)
 			free(copy[i]);
 		free(copy);
@@ -209,23 +233,34 @@ void crop_matrix(struct matrix *v, int count)
 	}
 }
 
-/* functie care inmulteste doua matrice*/
+
+/**
+ * @brief   Multiplies two matrixes.
+ * 
+ * This function reads the ID of two matrixes and multiplies them
+ * 
+ * @param   v   Pointer to the array of matrixes.
+ * @param   count   Number of current matrixes stored by v.
+ * 
+ * @note    If the indexes (IDs) are invalids, a message will be printed.
+ */
 void matrix_multiplication(struct matrix *v, int *count)
 {
 	int index1, index2, i, j, k, x;
 	scanf("%d%d", &index1, &index2);
-	/*daca indecsii sunt negativi sau mai mari decat numarul de matrice
-	memorate afisez mesajul*/
+
+	// If the idexes are invalid print some error messages
 	if (index1 > *count - 1 || index2 > *count - 1) {
 		printf("No matrix with the given index\n");
 		(*count)--;
 	} else if (v[index1].n != v[index2].m) {
-		/*daca numarul de coloane de la prima matrice este diferit de numarul
-		de linii de la a doua matrice afisez mesajul*/
+		
+		// If the sizes don't match for multiplication
 		printf("Cannot perform matrix multiplication\n");
 		(*count)--;
 	} else {
-		//aloc dinamic o matrice noua pe care o initializez cu 0
+
+		// Dynamically allocating a new matrix and initialising with 0
 		v[*count].mat = (int **)calloc(v[index1].m, sizeof(int *));
 		if (!v[*count].mat) {
 			printf("Malloc failed!\n");
@@ -238,7 +273,8 @@ void matrix_multiplication(struct matrix *v, int *count)
 				exit(0);
 			}
 		}
-		//algoritm de inmultirea a doua matrice
+
+		// Algorithm for matrix multiplication
 		for (i = 0; i < v[index1].m; i++)
 			for (j = 0; j < v[index2].n; j++)
 				for (k = 0; k < v[index1].n; k++) {
