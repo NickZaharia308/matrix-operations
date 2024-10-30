@@ -289,11 +289,21 @@ void matrix_multiplication(struct matrix *v, int *count)
 	}
 }
 
-//agloritm de sortare al matricelor in functie de suma elementelor
+
+/**
+ * @brief   Sorts matrixes.
+ * 
+ * This function sorts matrixes by the sum of their elements
+ * 
+ * @param   v   Pointer to the array of matrixes.
+ * @param   count   Number of current matrixes stored by v.
+ * @param	aux		Auxiliary matrix.
+ */
 void sort_matrix(struct matrix *v, int count, struct matrix aux)
 {
 	int *sum, i, j, k, sum_aux;
-	//pointer alocat dinamic care memoreaza suma elementelor fiecarei matrice
+
+	// Dynamically allocated pointer that stores the sum of each matrix
 	sum = (int *)calloc(count + 1, sizeof(int));
 	if (!sum) {
 		printf("Calloc failed!\n");
@@ -307,7 +317,8 @@ void sort_matrix(struct matrix *v, int count, struct matrix aux)
 					sum[i] += 10007;
 			}
 	}
-	//sortarea prin selectie
+	
+	// Selection sort
 	for (i = 0; i < count; i++)
 		for (j = i + 1; j <= count; j++)
 			if (sum[i] > sum[j]) {
@@ -318,11 +329,20 @@ void sort_matrix(struct matrix *v, int count, struct matrix aux)
 				sum[i] = sum[j];
 				sum[j] = sum_aux;
 			}
-	//eliberez din memorie pointerul
+	
+	// Free the pointer from the memory
 	free(sum);
 }
 
 //functie ce inlocuieste o matrice cu transpusa sa
+/**
+ * @brief   Replaces a matrix with its transpose.
+ * 
+ * This function replaces a matrix with its transpose.
+ * 
+ * @param   v   Pointer to the array of matrixes.
+ * @param   count   Number of current matrixes stored by v.
+ */
 void transpose_matrix(struct matrix *v, int count)
 {
 	int **transpose, i, j, m, n, index;
@@ -332,7 +352,7 @@ void transpose_matrix(struct matrix *v, int count)
 	} else {
 		m = v[index].n;
 		n = v[index].m;
-		//aloc dinamic un dublu pointer ce retine transpusa matricii date
+
 		transpose = (int **)malloc(m * sizeof(int *));
 		if (!transpose) {
 			printf("Malloc failed!\n");
@@ -348,16 +368,19 @@ void transpose_matrix(struct matrix *v, int count)
 		for (i = 0; i < m; i++)
 			for (j = 0; j < n; j++)
 				transpose[i][j] = v[index].mat[j][i];
-		//eliberez si aloc matricea data
+
 		free_matrix(v, index, v[index].m);
 		alloc_matrix(v, index, m, n);
-		//copiez valorile din dublu pointerul ajutator in matricea nou alocata
+
+		// Copy the values from the auxiliary double pointer in the newly
+		// allocated matrix
 		for (i = 0; i < m; i++)
 			for (j = 0; j < n; j++)
 				v[index].mat[i][j] = transpose[i][j];
 		v[index].m = m;
 		v[index].n = n;
-		//eliberez din memorie dublu pointerul
+
+		// Free the transpose matrix
 		for (int i = 0; i < m; i++)
 			free(transpose[i]);
 		free(transpose);
@@ -510,7 +533,8 @@ int free_and_move_matrix(struct matrix *v, int *count)
 	return ok;
 }
 
-//functie care imi elimina din memorie toate matricele
+
+// Function that deallocates all matrixes from memory
 void dealloc(struct matrix *v, int count)
 {
 	for (int i = 0; i <= count; i++)
