@@ -334,7 +334,7 @@ void sort_matrix(struct matrix *v, int count, struct matrix aux)
 	free(sum);
 }
 
-//functie ce inlocuieste o matrice cu transpusa sa
+
 /**
  * @brief   Replaces a matrix with its transpose.
  * 
@@ -390,10 +390,24 @@ void transpose_matrix(struct matrix *v, int count)
 /* functie auxiliara pentru functia power_matrix.
 Aceasta inmulteste doua matrice date si memoreaza rezultatul in
 matricea ajutatoare p_aux_matrix*/
+/**
+ * @brief   Helper function for matrix to a power.
+ * 
+ * Helper function for "power_matrix".
+ * Memorates the result in @param	p_matrix.
+ * 
+ * @param   v   Pointer to the array of matrixes.
+ * @param	p_matrix	The result matrix
+ * @param   index   Index of the matrix that will be raised to a power.
+ */
 void matrix_multi_2(struct matrix *v, int **p_matrix, int index)
 {
 	int **p_aux_matrix, i, j, k, x, n;
+
+	// No of lines/columns
 	n = v[index].n;
+
+	// Helper matrix
 	p_aux_matrix = (int **)calloc(n, sizeof(int *));
 	if (!p_aux_matrix) {
 		printf("Calloc failed!\n");
@@ -406,6 +420,8 @@ void matrix_multi_2(struct matrix *v, int **p_matrix, int index)
 			exit(0);
 		}
 	}
+
+	// Multiplying operation
 	for (i = 0; i < n; i++)
 		for (j = 0; j < n; j++)
 			for (k = 0; k < n; k++) {
@@ -415,7 +431,9 @@ void matrix_multi_2(struct matrix *v, int **p_matrix, int index)
 				if (p_aux_matrix[i][j] < 0)
 					p_aux_matrix[i][j] += 10007;
 			}
-	//copiez rezultatele din matricea ajutatoare in matricea rezultat
+
+	
+	// Copy the results in helper matrix and free the memory
 	for (i = 0; i < n; i++)
 		for (j = 0; j < n; j++)
 			p_matrix[i][j] = p_aux_matrix[i][j];
@@ -429,8 +447,8 @@ void power_matrix(struct matrix *v, int count)
 {
 	int index, power;
 	scanf("%d%d", &index, &power);
-	/*daca puterea sau indexul nu corespund cerintelor,
-	afisez mesajele de eroare */
+
+	// If the index or power is invalid, print a message
 	if (index > count || index < 0) {
 		printf("No matrix with the given index\n");
 	} else if (power < 0) {
@@ -442,6 +460,11 @@ void power_matrix(struct matrix *v, int count)
 		n = v[index].n;
 		/*aloc dinamic doi pointeri care ma ajuta la inmultiri,
 		unde p_matrix este matricea finala*/
+
+		/**
+		 * Create dynamically two matrixes that help for the multiplying.
+		 * p_matrix is the final matrix
+		 */
 		p_matrix = (int **)calloc(n, sizeof(int *));
 		if (!p_matrix) {
 			printf("Calloc failed!\n");
@@ -454,14 +477,17 @@ void power_matrix(struct matrix *v, int count)
 				exit(0);
 			}
 		}
-		//initializare cu In
+
+		// Initialize with I(n)
 		for (i = 0; i < n; i++)
 			p_matrix[i][i] = 1;
-		//algoritm de ridicare la putere in timp alogritmic
+
+		// Algorithm for logarithmic matrix exponentation
 		while (power) {
 			if (power % 2) {
-			/*daca puterea este impara inmultesc matricea baza (v[index].mat)
-			cu matricea rezultat (p_matrix)*/
+
+			// If the power is odd, multiply base matrix (v[indnex].mat) with
+			// result matrix (p_matrix)
 				power--;
 				matrix_multi_2(v, p_matrix, index);
 			}
@@ -481,22 +507,26 @@ void power_matrix(struct matrix *v, int count)
 			for (i = 0; i < n; i++)
 				for (j = 0; j < n; j++)
 					copy[i][j] = v[index].mat[i][j];
-			/*la fiecare pas inmultesc matricea baza cu ea insasi si mut
-			rezultatul din matricea auxiliara in matricea baza*/
+
+			// At each step multiply the base matrix with itself and move
+			// the result from auxiliary matrix in the base matrix
 			matrix_multi_2(v, copy, index);
 			for (i = 0; i < n; i++)
 				for (j = 0; j < n; j++)
 					v[index].mat[i][j] = copy[i][j];
-			//eliberez din memorie primul pointer pe care l-am folosit
+					
+			// Free from the memory the first pointer
 			for (i = 0; i < n; i++)
 				free(copy[i]);
 			free(copy);
 		}
-		//copiez rezultatele din matricea rezultat in matricea baza (initiala)
+
+		// Copy the results from result matrix in the base matrix (initial one)
 		for (i = 0; i < n; i++)
 			for (j = 0; j < n; j++)
 				v[index].mat[i][j] = p_matrix[i][j];
-		//eliberez din memorie al doilea pointer de care m-am folosit
+
+		// Free from the memory the second pointer
 		for (i = 0; i < n; i++)
 			free(p_matrix[i]);
 		free(p_matrix);
