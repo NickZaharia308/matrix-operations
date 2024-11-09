@@ -387,9 +387,7 @@ void transpose_matrix(struct matrix *v, int count)
 	}
 }
 
-/* functie auxiliara pentru functia power_matrix.
-Aceasta inmulteste doua matrice date si memoreaza rezultatul in
-matricea ajutatoare p_aux_matrix*/
+
 /**
  * @brief   Helper function for matrix to a power.
  * 
@@ -442,7 +440,15 @@ void matrix_multi_2(struct matrix *v, int **p_matrix, int index)
 	free(p_aux_matrix);
 }
 
-//functie ce ridica la o putere data, o matrice in timp logaritmic
+
+/**
+ * @brief   Raises to a given power a matrix
+ * 
+ * Function that raises to a given power a matrix in logarithmic time.
+ * 
+ * @param   v   Pointer to the array of matrixes.
+ * @param   count   Number of current matrixes stored by v.
+ */
 void power_matrix(struct matrix *v, int count)
 {
 	int index, power;
@@ -533,9 +539,16 @@ void power_matrix(struct matrix *v, int count)
 	}
 }
 
-/*functie care sterge din memorie o matrice si care muta restul
-matricelor cu o pozitie la stanga
-functia returneaza 1 daca operatia s-a efectuat sau 0, in caz contrar*/
+
+/**
+ * @brief   Deletes a matrix and moves the following matrixes one place to left
+ * 
+ * Function that removes from memory a matrix and moves all following matrixes
+ * one spot to the left so the indexes for the matrixes are continious.
+ * 
+ * @param   v   Pointer to the array of matrixes.
+ * @param   count   Number of current matrixes stored by v.
+ */
 int free_and_move_matrix(struct matrix *v, int *count)
 {
 	int index, i, j, k, ok;
@@ -544,8 +557,9 @@ int free_and_move_matrix(struct matrix *v, int *count)
 		printf("No matrix with the given index\n");
 		ok = 0;
 	} else {
-		/*sterg matricea i, o aloc dinamic si copiez elementele din
-		matricea i+1 in matricea i*/
+
+		// Free from the memory "i" matrix, allocate it with the new size
+		// (size of the next matrix) and copy in it the elements from "i + 1"
 		for (i = index; i < *count; i++) {
 			free_matrix(v, i, v[i].m);
 		alloc_matrix(v, i, v[i + 1].m, v[i + 1].n);
@@ -555,7 +569,9 @@ int free_and_move_matrix(struct matrix *v, int *count)
 			for (k = 0; k < v[i].n; k++)
 				v[i].mat[j][k] = v[i + 1].mat[j][k];
 		}
-		//eliberez din memorie ultima matrice si scad numarul de matrice
+
+		// Free from memory the last matrix and decrement
+		// the number of matrixes
 		free_matrix(v, *count, v[*count].m);
 		(*count)--;
 		ok = 1;
@@ -565,6 +581,14 @@ int free_and_move_matrix(struct matrix *v, int *count)
 
 
 // Function that deallocates all matrixes from memory
+/**
+ * @brief   Frees from memory all matrixes
+ * 
+ * Function that deallocates from the memory all the matrixes.
+ * 
+ * @param   v   Pointer to the array of matrixes.
+ * @param   count   Number of current matrixes stored by v.
+ */
 void dealloc(struct matrix *v, int count)
 {
 	for (int i = 0; i <= count; i++)
