@@ -10,12 +10,9 @@
 #include <stdlib.h>
 
 
-/*structura care contine un dublu pointer, numarul de linii si
-numarul de coloane*/
 /**
  * @brief   Structure used for the matrix
  * 
- * This constant is used to prevent overflow in arithmetic operations.
  */
 struct matrix {
 	 /**
@@ -96,7 +93,17 @@ void load_matrix(struct matrix *v, int count)
 			scanf("%d", &v[count].mat[i][j]);
 }
 
-/*functie care elibereaza memoria alocata unei matrici*/
+
+/**
+ * @brief   Frees from memory an allocated matrix
+ * 
+ * This function frees from the memory a dynamically allocates matrix.
+ * 
+ * @param   v   Pointer to the array of matrixes.
+ * @param   count   ID of the current matrix.
+ * @param	m	Number of lines.
+ * 
+ */
 void free_matrix(struct matrix *v, int count, int m)
 {
 	for (int i = 0; i < m; i++)
@@ -402,7 +409,7 @@ void matrix_multi_2(struct matrix *v, int **p_matrix, int index)
 {
 	int **p_aux_matrix, i, j, k, x, n;
 
-	// No of lines/columns
+	// No of lines / columns
 	n = v[index].n;
 
 	// Helper matrix
@@ -580,7 +587,6 @@ int free_and_move_matrix(struct matrix *v, int *count)
 }
 
 
-// Function that deallocates all matrixes from memory
 /**
  * @brief   Frees from memory all matrixes
  * 
