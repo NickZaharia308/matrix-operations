@@ -471,8 +471,6 @@ void power_matrix(struct matrix *v, int count)
 	} else {
 		int **copy, **p_matrix, n, i, j, k, x;
 		n = v[index].n;
-		/*aloc dinamic doi pointeri care ma ajuta la inmultiri,
-		unde p_matrix este matricea finala*/
 
 		/**
 		 * Create dynamically two matrixes that help for the multiplying.
