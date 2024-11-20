@@ -12,27 +12,32 @@ The supported operations are:
 - matrix multiplication and exponentiation
 - dynamically allocating and deallocating matrixes from memory
 
-Se ocupa cu prelucrarea matricelor (memorare, afisarea numarului de linii si a
-numarului de coloane, afisarea valorilor, redimensionare, inmultire, sortare in
-functie de suma elementelor, calcularea transpusei, ridicarea la putere si
-eliminarea din memorie)
 
------------------------------------------------------------------------------
+### Tasks description and Workflow
 
-### Functionare
+The first thing in the project is the **matrix structure**.
 
+```C
+struct matrix {
+	 /**
+	 * @brief   double int pointer for the matrix.
+	 */
+	int **mat;
+	 /**
+	 * @brief   n for number of lines and m for number of columns.
+	 */
+	int n;
+	int m;
+};
+```
 
-Am declarat o variabila de tip pointer la o structura care ma ajuta sa accesez:
-un dublu pointer (o matrice), numarul de linii si numarul de coloane.
+In `main()`, a pointer is declared so the array of matrixes can be dynamically reallocated.
 
-Programul citeste un caracter de la STDIN pana cand intalneste caracterul 'Q'.
+The program reads a char from `STDIN` until 'Q' is read, when it stops. 
 
-Daca este citita litera 'L', creste contorul pentru matrici, se citeste numarul
-de linii si numarul de coloane, se aloca o matrice si se citesc elementele
-acesteia.
+If the letter 'L' is read, the matrix counter in incremented, then the number of lines and the number of columns is read, the matrix is allocated its elements are read.
 
-Daca este citita litera 'D' se afiseaza numarul de linii si numarul de coloane
-pentru o matrice al carei index este stiut.
+When letter 'D' is read, the number of lines and the number of columns are printed for a given matrix index.
 
 Pentru citirea literei 'P' se afiseaza valorile matricei al carei index este
 dat.
