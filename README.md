@@ -39,23 +39,18 @@ If the letter 'L' is read, the matrix counter in incremented, then the number of
 
 When letter 'D' is read, the number of lines and the number of columns are printed for a given matrix index.
 
-Pentru citirea literei 'P' se afiseaza valorile matricei al carei index este
-dat.
+Reading the letter 'P', will print the values of the matrix whose index is given.
 
-Litera 'C' apeleaza functia pentru redimensionare, functie care citeste liniile
-si coloanele dupa care se face redimensionarea, aloca dinamic o matrice in care
-se memoreaza valorile aferente liniilor si coloanelor. Elibereaza matricea din
-memorie, o aloca din nou cu un nou numar de linii si cu un nou numar de
-coloane, apoi preia valorile din matricea ajutatoare. Se dealoca toate
-resursele auxiliare.
+Letter 'C' stands for cropping, a function that reads the number of the lines and the number of the columns.
+It allocates dynamically a matrix in which the new matrix in which the new values (according to the lines and the columns given in the command).
+It frees the old matrix from the memory, it allocates a new matrix with the new number of lines and the new number of columns and copies the values from the auxiliary matrix.
+All auxiliary resources are deallocated.
 
-La citirea literei 'M' se adauga o noua matrice la finalul multimii de matrice
-cu numarul de linii si numarul de coloane conforme inmultirii a doua matrice.
-Se efectueaza algoritmul de inmultire a doua matrice, iar valorile sunt
-memorate in matricea produs.
+When reading the letter 'M' a new matrix is added at the final of the array of matrixes.
+A matrix multiplying will be performed with the indexes of the matrixes from the instruction and the multiplied values are memorated in the new matrix.
 
-Daca se citeste litera 'O' se sorteaza matricele in functie de suma elementelor
-fiecarei matrice. Algoritmul de sortare este cel prin selectie.
+If the letter 'O' is read, matrixes will be sort by the sum of their values.
+The algorithm used for sorting is selection sort.
 
 Pentru citirea litere 'T' se apeleaza o functie ce aloca dinamic matricea
 transpusa a unei matrice date. Matricea data se dealoca si este inlocuita cu
